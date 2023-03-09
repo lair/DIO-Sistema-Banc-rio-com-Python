@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 menu = """
 [1] Depositar
 [2] Sacar
@@ -6,7 +9,7 @@ menu = """
 
 
 =>"""
-
+data_atual = datetime.today().strftime('%d-%m-%Y')
 valor = 0
 saldo = 0
 LIMITE = 500
@@ -15,6 +18,10 @@ numero_saques = 0
 LIMITE_SAQUES = 3
 
 while True:
+
+    if data_atual != datetime.today().strftime('%d-%m-%Y'):
+        data_atual = datetime.today().strftime('%d-%m-%Y')
+        numero_saques = 0
 
     opcao = input(menu)
 
@@ -25,7 +32,7 @@ while True:
 
         if valor > 0:
             saldo += valor
-            extrato += f"Depósito: R$ {valor:.2f}\n"
+            extrato += f"{datetime.today().strftime('%d-%m-%Y %H:%M:%S')} Depósito: R$ {valor:.2f}\n"
         else:
             print("Operação falhou! O valor do deposito é inválido.")
 
@@ -42,17 +49,15 @@ while True:
             if valor > LIMITE:
                 print("Operação falhou! O valor informado é maior que o limite para saque.")
             
-            #Teste: se o saldo é suficiente
- ##
-            if valor > saldo:
+            #Teste: se o saldo é suficiente 
+            elif valor > saldo:
                 print("Operação falhou! Saldo insuficiente.")
 
             #Passou pelos testes e será processado o saque
- ##
-            if valor > 0:
+            elif valor > 0:
                 numero_saques += 1
                 saldo -= valor
-                extrato += f"Saque: R$ {valor:.2f}\n"
+                extrato += f"{datetime.today().strftime('%d-%m-%Y %H:%M:%S')} Saque: R$ {valor:.2f}\n"
             else:
                 print("Operação falhou! Valor digitado é inválido.")
 
@@ -61,11 +66,11 @@ while True:
 
     #Extrato
     elif opcao == '3':
-        print("\n-------------Extrato-------------")
+        print("\n-------------------Extrato-------------------")
         print("Não foram realizadas movimentações" if not extrato else extrato)
-        print("---------------------------------")
-        print(f"\nSaldo: R$ {saldo:.2f}")
-        print("---------------------------------")
+        print("---------------------------------------------")
+        print(f"Saldo: R$ {saldo:.2f}")
+        print("---------------------------------------------")
 
     #Sair    
     elif opcao == '4':
